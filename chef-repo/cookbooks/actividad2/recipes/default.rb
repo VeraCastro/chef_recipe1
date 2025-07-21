@@ -1,15 +1,36 @@
-#
-# Cookbook:: actividad2
-# Recipe:: Receta para instalar y activar Apache (httpd en Linux, apache2 en Windows)
+#Cookbook:: actividad2
+# Recipe:: Receta para crear un usuario, un directorio personalizado y un archivo de configuración
 # Copyright:: 2025, David Huerta Bustamante, All Rights Reserved.
 
-Chef::Config[:chef_license] = "accept" # Aceptar licencia de Chef desde la receta
+Chef::Config[:chef_license] = "accept"
 
-package 'apache2' do #Instala el paquete apache2
-  action :install
+# Crear usuario 'despliegue'
+user 'despliegue' do
+  comment 'Usuario para tareas de despliegue automatizado'
+  home '/home/despliegue'
+  shell '/bin/bash'
+  manage_home true
+  action :create
 end
 
-service 'apache2' do #Inicia el servidor de apache2
-  action [:enable, :start]
+# Crear directorio /opt/app_config con permisos
+directory '/opt/app_config' do
+  owner 'despliegue'
+  group 'despliegue'
+  mode '0755'
+  action :create
 end
 
+# Crear archivo de configuración
+file '/opt/app_config/config.txt' do
+  content <<~CONFIG
+    # Configuración generada por Chef
+    ambiente = produccion
+    version = 1.0.0
+    autor = David y Veronica
+  CONFIG
+  owner 'despliegue'
+  group 'despliegue'
+  mode '0644'
+  action :create
+end

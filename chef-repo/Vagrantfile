@@ -1,24 +1,25 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/bionic64" #Ubuntu 18.04, se puede cambiar a ubuntu/focal64 para 20.04
-  config.vm.hostname = "apache-chef"
-  config.vm.network "private_network", ip: "192.168.56.10" #Configura la red sobre la que se levantará el servidor
   
+  config.vm.box = "ubuntu/bionic64" # Box base (Ubuntu 18.04)
+  config.vm.hostname = "chef-config"
+  config.vm.network "private_network", ip: "192.168.56.15" #Configura la red sobre la que se levantará el servidor
+
+  # Configuración de recursos de la VM
   config.vm.provider "virtualbox" do |vb|
     vb.memory = "1024"
     vb.cpus = 1
   end
 
-  config.vm.provision "shell", inline: <<-SHELL #Descarga y actualiza los paquetes
-    apt-get update
+  # Provisionamiento inicial con shell (opcional, asegura conectividad y herramientas mínimas)
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update #Descarga y actualiza los paquetes
     apt-get install -y curl
   SHELL
 
+  # Provisionamiento con chef_zero, apuntando al cookbook
   config.vm.provision "chef_zero" do |chef|
     chef.cookbooks_path = "cookbooks"
     chef.add_recipe "actividad2"
-    chef.nodes_path = ""
+    chef.nodes_path = "" # evita el error de nodos no definidos
   end
 end
