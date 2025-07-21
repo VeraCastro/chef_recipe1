@@ -15,4 +15,4 @@ Para la colaboración con el código, decidimos utilizar el sistema de gestión 
   Se localiza el código de la receta de **MongoDB**.
 
 - **Rama `receta2`**:  
-  Se localiza el código de la receta de **Apache2**.
+  Se localiza el código de la receta de **Directorios**.
