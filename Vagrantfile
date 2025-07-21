@@ -7,7 +7,7 @@ Vagrant.configure("2") do |config|
     # Provisionador de Chef
     config.vm.provision "chef_solo" do |chef|
       chef.cookbooks_path = ["cookbooks"]
-      chef.add_recipe "mongodb"
+      chef.add_recipe "actividad2"
       chef.log_level = :debug
       chef.arguments = "--chef-license accept"
     end
